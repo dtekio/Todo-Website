@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ToDo App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- CSS Stylesheets -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Courgette:400,700">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+	<link rel="stylesheet" href="{{url_for('static', filename = 'styles/style.css')}}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+	<header class="masthead">
+		<div class="boards-menu">
+			<button class="boards-btn btn btn-outline-dark" type="button" data-bs-toggle="offcanvas"
+				data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"><i
+					class="fab fa-trello boards-btn-icon "></i>Boards</button>
+		</div>
+		<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+			aria-labelledby="offcanvasNavbarLabel">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Boards</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+				<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+					{% for board in boards: %}
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page"
+							href="{{url_for('home', id=board.id)}}">{{board['name']}}</a>
+					</li>
+					{% endfor %}
+					<form action="/add" method="post" class="form d-flex" role="form">
+						<input class="form-control me-2" name='name' type="text" placeholder="Add Board"
+							aria-label="add">
+						<button class="btn btn-outline-dark" type="submit">Add</button>
+					</form>
+				</ul>
+			</div>
+		</div>
+		<div class="logo">
+			<h1>dtekio</h1>
+		</div>
+		<div class="user-settings">
+			<a href="{{url_for('delete', id=id_to_add)}}">
+				<button class="user-settings-btn btn btn-outline-dark" aria-label="Create">
+
+					<i class="fas fa-trash" aria-hidden="true"></i>
+				</button>
+			</a>
+
+
+			<button type="button" data-bs-toggle="modal" data-bs-target="#info"
+				class="user-settings-btn btn btn-outline-dark" aria-label="Information">
+				<i class="fas fa-info-circle" aria-hidden="true"></i>
+			</button>
+		</div>
+
+		<!-- Modals -->
+		<div class="modal fade" id="info" tabindex="-1" aria-labelledby="infoLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="infoLabel">Contact me</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-lg-6">
+									<h3>Send me a message</h3>
+									<form action="/contact" method="post" id='contactform' class="form" role="form"
+										novalidate="">
+										<div class="form-group  required"><label class="control-label"
+												for="name">Name</label>
+											<input class="form-control" id="name" name="name" required="" type="text"
+												value="">
+										</div>
+										<div class="form-group  required"><label class="control-label"
+												for="email">E-Mail</label>
+											<input class="form-control" id="email" name="email" required="" type="text"
+												value="">
+										</div>
+										<div class="form-group  required"><label class="control-label"
+												for="phone_number">Phone Number</label>
+											<input class="form-control" id="phone_number" name="phone_number"
+												required="" type="text" value="">
+										</div>
+										<div class="form-group  required"><label class="control-label"
+												for="message">Message</label>
+											<input class="form-control" id="message" name="message" required=""
+												type="text" value="">
+										</div>
+										<input class="btn btn-primary" id="submit" name="submit" type="submit"
+											value="Send" formtarget="#contactform">
+									</form>
+								</div>
+
+								<div class="col-lg-6">
+									<h3 class="contact">Contact details</h3>
+									<p class="small">
+										Phone number: +7 (701) 888 19-22 <br>
+										E-mail: dtair@icloud.com <br>
+									</p>
+									<p class="small copyright text-muted">Copyright &copy; Tair 2022</p>
+									<ul class="list-inline text-center">
+										<h2>Find me on</h1>
+											<li class="list-inline-item">
+												<a href="https://twitter.com/TairD__">
+													<span class="fa-stack fa-lg">
+														<i class="fas fa-circle fa-stack-2x"></i>
+														<i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+													</span>
+												</a>
+											</li>
+											<li class="list-inline-item">
+												<a href="https://www.linkedin.com/in/tair-dulatuly-884599241">
+													<span class="fa-stack fa-lg">
+														<i class="fas fa-circle fa-stack-2x"></i>
+														<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+													</span>
+												</a>
+											</li>
+											<li class="list-inline-item">
+												<a href="https://github.com/dtekio">
+													<span class="fa-stack fa-lg">
+														<i class="fas fa-circle fa-stack-2x"></i>
+														<i class="fab fa-github fa-stack-1x fa-inverse"></i>
+													</span>
+												</a>
+											</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<!-- end of modals -->
+	</header>
+
+	<section class="lists-container">
+		<div class="list">
+			<h3 class="list-title">To Do</h3>
+			<ul class="list-items">
+				{% if has_goto:%}
+				{% for task in board.todo_tasks %}
+				<!-- Button trigger modal -->
+				<li type="button" data-bs-toggle="modal" data-bs-target="#{{task.title|trim|replace(' ', '')}}">
+					{{task.title}}</li>
+
+				<!-- Modal -->
+				<div class="modal fade" id="{{task.title|trim|replace(' ', '')}}" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<form method="POST" action="{{url_for('home', id=id_to_add)}}" class="form">
+									<input type="hidden" id="tag" name="tag" value="0">
+									<input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+									<input type="hidden" id="edit_mode" name="edit_mode" value="true">
+									<div class="form-group row">
+										<label for="task-title">Task Title (should start with letter, otherwise won't
+											work)</label>
+										<input class="form-control" id="task-title" name="task-title" required=""
+											type="text" value="{{task.title}}">
+									</div>
+									<div class="form-group row">
+										<label for="task-description">Task Description</label>
+										<input class="form-control" id="task-description" name="task-description"
+											required="" type="text" value="{{task.	description}}">
+									</div>
+									<div class="form-group row">
+										<input class="btn btn-primary" id="submit" name="submit" type="submit">
+									</div>
+								</form>
+							</div>
+							<a href="{{url_for('delete_task', id=task.id, tag=0)}}"><button
+									class="delete-button btn btn-primary">Delete</button></a>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif%}
+			</ul>
+
+			<button data-bs-toggle="modal" data-bs-target="#create_todo" class="add-card-btn btn">Add a card</button>
+			<div class="modal fade" id="create_todo" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="createLabel">Create</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form method="POST" action="{{url_for('home', id=id_to_add)}}" class="form">
+								<input type="hidden" id="tag" name="tag" value="0">
+								<div class="form-group row">
+									<label for="task-title">Task Title (should start with letter, otherwise won't
+										work)</label>
+									<input class="form-control" id="task-title" name="task-title" required=""
+										type="text" value="">
+								</div>
+								<div class="form-group row">
+									<label for="task-description">Task Description</label>
+									<input class="form-control" id="task-description" name="task-description"
+										required="" type="text" value="">
+								</div>
+								<div class="form-group row">
+									<input class="btn btn-primary" id="submit" name="submit" type="submit">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">Doing</h3>
+			<ul class="list-items">
+				{% if has_goto:%}
+				{% for task in board.doing_tasks %}
+				<!-- Button trigger modal -->
+				<li type="button" data-bs-toggle="modal" data-bs-target="#{{task.title|trim|replace(' ', '')}}">
+					{{task.title}}</li>
+
+				<!-- Modal -->
+				<div class="modal fade" id="{{task.title|trim|replace(' ', '')}}" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<form method="POST" action="{{url_for('home', id=id_to_add)}}" class="form">
+									<input type="hidden" id="tag" name="tag" value="1">
+									<input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+									<input type="hidden" id="edit_mode" name="edit_mode" value="true">
+									<div class="form-group row">
+										<label for="task-title">Task Title (should start with letter, otherwise won't
+											work)</label>
+										<input class="form-control" id="task-title" name="task-title" required=""
+											type="text" value="{{task.title}}">
+									</div>
+									<div class="form-group row">
+										<label for="task-description">Task Description</label>
+										<input class="form-control" id="task-description" name="task-description"
+											required="" type="text" value="{{task.description}}">
+									</div>
+									<div class="form-group row">
+										<input class="btn btn-primary" id="submit" name="submit" type="submit">
+									</div>
+								</form>
+							</div>
+							<a href="{{url_for('delete_task', id=task.id, tag=1)}}"><button
+									class="delete-button btn btn-primary">Delete</button></a>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif%}
+			</ul>
+
+			<button data-bs-toggle="modal" data-bs-target="#create_doing" class="add-card-btn btn">Add a card</button>
+			<div class="modal fade" id="create_doing" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="createLabel">Create</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form method="POST" action="{{url_for('home', id=id_to_add)}}" class="form">
+								<input type="hidden" id="tag" name="tag" value="1">
+								<div class="form-group row">
+									<label for="task-title">Task Title (should start with letter, otherwise won't
+										work)</label>
+									<input class="form-control" id="task-title" name="task-title" required=""
+										type="text" value="">
+								</div>
+								<div class="form-group row">
+									<label for="task-description">Task Description</label>
+									<input class="form-control" id="task-description" name="task-description"
+										required="" type="text" value="">
+								</div>
+								<div class="form-group row">
+									<input class="btn btn-primary" id="submit" name="submit" type="submit">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="list">
+			<h3 class="list-title">Doing</h3>
+			<ul class="list-items">
+				{% if has_goto:%}
+				{% for task in board.done_tasks %}
+				<!-- Button trigger modal -->
+				<li type="button" data-bs-toggle="modal" data-bs-target="#{{task.title|trim|replace(' ', '')}}">
+					{{task.title}}</li>
+
+				<!-- Modal -->
+				<div class="modal fade" id="{{task.title|trim|replace(' ', '')}}" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<form method="POST" action="{{url_for('home', id=id_to_add)}}" class="form">
+									<input type="hidden" id="tag" name="tag" value="2">
+									<input type="hidden" id="task_id" name="task_id" value="{{task.id}}">
+									<input type="hidden" id="edit_mode" name="edit_mode" value="true">
+									<div class="form-group row">
+										<label for="task-title">Task Title (should start with letter, otherwise won't
+											work)</label>
+										<input class="form-control" id="task-title" name="task-title" required=""
+											type="text" value="{{task.title}}">
+									</div>
+									<div class="form-group row">
+										<label for="task-description">Task Description</label>
+										<input class="form-control" id="task-description" name="task-description"
+											required="" type="text" value="{{task.description}}">
+									</div>
+									<div class="form-group row">
+										<input class="btn btn-primary" id="submit" name="submit" type="submit">
+									</div>
+								</form>
+							</div>
+							<a href="{{url_for('delete_task', id=task.id, tag=2)}}"><button
+									class="delete-button btn btn-primary">Delete</button></a>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif%}
+			</ul>
+
+			<button data-bs-toggle="modal" data-bs-target="#create_done" class="add-card-btn btn">Add a card</button>
+			<div class="modal fade" id="create_done" tabindex="-1" aria-labelledby="createLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="createLabel">Create</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form method="POST" action="{{url_for('home', id=id_to_add)}}" class="form">
+								<input type="hidden" id="tag" name="tag" value="2">
+								<div class="form-group row">
+									<label for="task-title">Task Title (should start with letter, otherwise won't
+										work)</label>
+									<input class="form-control" id="task-title" name="task-title" required=""
+										type="text" value="">
+								</div>
+								<div class="form-group row">
+									<label for="task-description">Task Description</label>
+									<input class="form-control" id="task-description" name="task-description"
+										required="" type="text" value="">
+								</div>
+								<div class="form-group row">
+									<input class="btn btn-primary" id="submit" name="submit" type="submit">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
